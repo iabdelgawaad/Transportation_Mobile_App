@@ -105,6 +105,7 @@ public class MainFragment extends Fragment {
                             i.putExtra("Fname",username);
                             i.putExtra("id", profileid);
                             i.putExtra("pic", imgurl);
+                            i.putExtra("email",email);
                             startActivity(i);
 
                         }

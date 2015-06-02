@@ -1,7 +1,10 @@
 package com.FBLoginSample;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -47,7 +52,7 @@ import java.util.List;
 
 public class myprof extends Activity {
 
-    public static String userName,userid,userpic;
+    public static String userName,userid,userpic,email;
     TextView name,id;
     ImageView imageView;
     Button skip;
@@ -91,6 +96,7 @@ public class myprof extends Activity {
         userName = extras.getString("Fname");
         userid = extras.getString("id");
         userpic=extras.getString("pic");
+        email = extras.getString("email");
         name.setText(userName);
         Toast.makeText(getBaseContext(),"link"+userid,Toast.LENGTH_SHORT).show();
         Toast.makeText(getBaseContext(),"befor get",Toast.LENGTH_SHORT).show();
@@ -145,12 +151,44 @@ public class myprof extends Activity {
 
             if (result != null) {
                 imageView.setImageBitmap(result);
+                //save to internal memory
+                String profile_img_path = saveToInternalSorage(result);
+                //save path to shared preference
+//
+                SharedPreferences preferences = getSharedPreferences("transportation", getApplicationContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("profile.jpg_path",  profile_img_path);
+                editor.putString("user_name",userName);
+                editor.putString("facebook_id",userid);
+                editor.putString("emai",email);
+                editor.commit();
+                //
             }
         }
     }
 
-    // Method to download using URL class
+    private String saveToInternalSorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,"profile.jpg");
 
+        FileOutputStream fos = null;
+        try {
+
+            fos = new FileOutputStream(mypath);
+
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return directory.getAbsolutePath();
+    }
+
+    // Method to download using URL class
     public Bitmap downloadImage(String url) {
         Bitmap bitmap = null;
 
