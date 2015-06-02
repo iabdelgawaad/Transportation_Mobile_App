@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:weightSum="1">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="315dp"
+    android:layout_height="80dp"
+    android:layout_margin="5dp"
+    android:padding="15dp"
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/layer_card"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <!-- icon -->
+    <ImageView
+        android:id="@+id/item_icon"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        android:contentDescription="icon"
+        android:src="@drawable/bus" />
+
+    <!-- title -->
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/item_icon"
+        android:clickable="true"
+        android:layout_marginLeft="2dp"
+        android:padding="2dp"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/item_subtitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/item_icon"
+        android:clickable="true"
+        android:layout_marginLeft="2dp"
+        android:padding="2dp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="17sp"
+        android:text="Click me to view bus lines "
+        android:layout_marginTop="25dp"/>
+
+</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="GO"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:layout_margin="5dp"
+            android:padding="15dp"
+            android:textColor="@color/abc_primary_text_material_dark"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/layer_card_btn"
+            android:layout_gravity="center"
+            />
+
+    </RelativeLayout>
+
+    </LinearLayout>
