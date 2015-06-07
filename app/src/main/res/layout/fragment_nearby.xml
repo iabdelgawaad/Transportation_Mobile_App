@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,11 +6,47 @@
     tools:context="com.FBLoginSample.activity.MetroFragment">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <AutoCompleteTextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/autotxt_src"
+            android:hint="Source"/>
+        <AutoCompleteTextView
+            android:layout_marginTop="40dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/autotxt_dest"
+            android:hint="Destination"
+             />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:text="GO"
+            android:id="@+id/go"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@+id/autotxt_src"
+            android:layout_toEndOf="@+id/autotxt_src"
+            android:layout_alignBottom="@+id/autotxt_dest"
+            android:layout_alignParentTop="true" />
+
+
+    </RelativeLayout>
+
+
+
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
-        class="com.google.android.gms.maps.MapFragment" />
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
     <TextView
@@ -29,4 +65,5 @@
         android:layout_alignEnd="@+id/map"/>
 
 
-</RelativeLayout>
+
+</LinearLayout>

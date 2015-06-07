@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/camera_small"
+    android:gravity="center"
+    android:tileModeX="mirror"
+    android:tileModeY="mirror"
+    android:autoMirrored="true"
+    android:filter="true"
+    android:mipMap="true"
+    android:tint="@color/background_material_light"
+    android:tintMode="src_in"
+    android:tileMode="repeat">
+</bitmap>
+

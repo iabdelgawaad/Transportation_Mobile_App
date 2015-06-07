@@ -1,0 +1,175 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
+
+    android:background="@drawable/ground"
+    android:id="@+id/me">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/Rel"
+        android:weightSum="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="198dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/linearcolor"
+                android:orientation="vertical"
+                android:id="@+id/linearLayout8">
+                <TextView
+                    android:id="@+id/txt1"
+                    android:layout_width="259dp"
+                    android:layout_height="fill_parent"
+                    android:text="Log in with facebook"
+                    android:textColor="#36353e"
+                    android:textSize="25dp"
+                    android:gravity="center"
+                     />
+            </LinearLayout>
+            <Button
+                android:gravity="center"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="20dp"
+                android:padding="10dp"
+                android:text="go"
+                android:background="@drawable/rectangle"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:background="@drawable/linearcolor"
+                android:orientation="vertical"
+                android:id="@+id/linearLayout4">
+
+                <EditText
+                    android:id="@+id/etxt2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:hint="Email"
+                    android:layout_marginLeft="70dp"
+                    android:background="@drawable/edittext_top_bg"
+                    android:textColorHint="#cccccc"
+                    android:textColor="@color/primary_text" />
+
+                <EditText
+                    android:id="@+id/etxt1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="70dp"
+                    android:padding="10dp"
+                    android:hint="Password"
+                    android:background="@drawable/edittext_top_bg"
+                    android:textColorHint="#cccccc"
+                    android:textColor="@color/primary_text" />
+
+            </LinearLayout>
+
+            <Button
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="20dp"
+                android:padding="30dp"
+                android:text="go"
+                android:background="@drawable/rectangle2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/linearcolor"
+                android:orientation="vertical"
+                android:id="@+id/linearLayout3">
+                <TextView
+                    android:id="@+id/txt2"
+                    android:layout_width="255dp"
+                    android:layout_height="fill_parent"
+                    android:text="Create new account"
+                    android:textColor="#36353e"
+                    android:textSize="25dp"
+                    android:gravity="center"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="20dp"
+                android:padding="30dp"
+                android:text="go"
+                android:background="@drawable/rectangle3"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
