@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
     private int sourceState=0;
     private int destinationState=0;
     private String JsonArrayName="areas";
-    private String TAG_STATION="metrostationmodel";
+    private String TAG_STATION="listareastation";
     private static String tvSource;
     private static String tvdestination;
     private JSONArray jsonResult;
