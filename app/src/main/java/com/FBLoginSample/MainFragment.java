@@ -49,6 +49,8 @@ public class MainFragment extends Fragment {
     public static boolean signedIn = false;
     SharedPreferences sharedPref;
 
+    boolean facebook_login = false;
+
 
     private ProgressDialog pDialog;
     private static String url = "http://gate-info.com/transportation/public/webservice/loginservice";
@@ -84,8 +86,8 @@ public class MainFragment extends Fragment {
                         public void onCompleted(
                                 JSONObject object,
                                 GraphResponse response) {
-                            // Application code
 
+                            // Application co
                             Log.v("halima",object.toString());
                             Log.v("LoginActivity", response.toString());
                             //
@@ -93,6 +95,7 @@ public class MainFragment extends Fragment {
                             try {
                                 email = response.getJSONObject().getString("email");
                                 username=response.getJSONObject().getString("name");
+                                profileid = response.getJSONObject().getString("id");
                                 imgurl=object.getJSONObject("picture").getJSONObject("data").getString("url");
 
                             } catch (JSONException e) {
@@ -102,10 +105,25 @@ public class MainFragment extends Fragment {
                             Log.d("FB Email:", email);
                             //
                             Intent i = new Intent(getActivity(), myprof.class);
-                            i.putExtra("Fname",username);
-                            i.putExtra("id", profileid);
+
+                            i.putExtra("user_name",username);
+                            i.putExtra("facebook_id", profileid);
                             i.putExtra("pic", imgurl);
                             i.putExtra("email",email);
+                            facebook_login = true;
+                            i.putExtra("facebook_login",facebook_login);
+
+                            //
+
+                            //Save user data to sharepreferences
+                            signedIn = true;
+                            SharedPreferences preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("signedIn", signedIn);
+                            editor.commit();
+
+                            //
+
                             startActivity(i);
 
                         }
@@ -116,17 +134,6 @@ public class MainFragment extends Fragment {
 
             request.setParameters(parameters);
             request.executeAsync();
-
-
-            //Save user data to sharepreferences
-            signedIn = true;
-            SharedPreferences preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("signedIn", signedIn);
-            editor.commit();
-
-            //
-
 
 
         }
@@ -225,11 +232,11 @@ public class MainFragment extends Fragment {
 
         final EditText email=(EditText)view.findViewById(R.id.emailtxt);
         final EditText password=(EditText)view.findViewById(R.id.passtxt);
-        Button btn=(Button)view.findViewById(R.id.email_sign_in_button);
+        Button sign_btn=(Button)view.findViewById(R.id.email_sign_in_button);
         errormsg= (TextView) view.findViewById(R.id.errormsg);
 
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        sign_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -305,9 +312,35 @@ public class MainFragment extends Fragment {
                     String status = jsonObj.getJSONArray(TAG_LOGINCONTENTS).getJSONObject(0).getString("status");
                     if(status.equals("1")){     //correct
 
-                        String id=jsonObj.getJSONArray(TAG_LOGINCONTENTS).getJSONObject(0).getString("user_id");
-                        Intent intent=new Intent(getActivity(),com.FBLoginSample.me.class);
-                        // intent.putExtra("user_id",id);
+                        String id = jsonObj.getJSONArray(TAG_LOGINCONTENTS).getJSONObject(0).getString("user_id");
+                        String username = jsonObj.getJSONArray(TAG_LOGINCONTENTS).getJSONObject(0).getString("user_name");
+
+
+                        Intent intent=new Intent(getActivity(),myprof.class);
+                        intent.putExtra("id",id);
+                        intent.putExtra("user_name",username);
+                        intent.putExtra("email",emailData);
+                        intent.putExtra("password",passwordData);
+                        intent.putExtra("facebook_login",facebook_login);
+
+                        //       //save path to shared preference
+//
+                        SharedPreferences preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("profile.jpg_path",  "");
+                        editor.putString("user_name",username);
+                        editor.putString("facebook_id","");
+                        editor.putString("email",emailData);
+                        editor.putString("user_id",id);
+                        editor.commit();
+                        //
+                        //Save user data to sharepreferences
+                        signedIn = true;
+                        preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
+                        editor = preferences.edit();
+                        editor.putBoolean("signedIn", signedIn);
+                        editor.commit();
+                        //
                         startActivity(intent);
                     }
                     else if(status.equals("0")){//error email
