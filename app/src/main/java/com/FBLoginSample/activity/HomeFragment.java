@@ -237,9 +237,7 @@ public class HomeFragment extends Fragment {
             mainActivity.respond(areas);*/
             super.onPostExecute(s);
 
-
         }
-
         //
 
     }

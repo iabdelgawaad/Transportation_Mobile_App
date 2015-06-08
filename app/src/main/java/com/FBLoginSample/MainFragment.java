@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -50,7 +51,6 @@ public class MainFragment extends Fragment {
     SharedPreferences sharedPref;
 
     boolean facebook_login = false;
-
 
     private ProgressDialog pDialog;
     private static String url = "http://gate-info.com/transportation/public/webservice/loginservice";
@@ -196,12 +196,29 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //test
+        Button go= (Button) view.findViewById(R.id.gobtn);
+        go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(getActivity().getBaseContext(),test.class);
+                startActivity(i);
+            }
+        });
+
+
+
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         signmeUp= (Button) view.findViewById(R.id.signup_btn);
         forgetpass= (TextView) view.findViewById(R.id.forget_txt);
         LoginButton loginButton= (LoginButton) view.findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends"));
         loginButton.setFragment(this);
+        Typeface face= Typeface.createFromAsset(getActivity().getAssets(), "fonts/BittersweetNF.otf");
+
+        signmeUp.setTypeface(face);
+
+        forgetpass.setTypeface(face);
         loginButton.registerCallback(mCallbackManager, mCallback);
 
         forgetpass.setOnClickListener(new View.OnClickListener() {
@@ -213,11 +230,12 @@ public class MainFragment extends Fragment {
         });
 
         /* layout*/
-//        loginButton.setBackgroundResource(R.drawable.halima_button_def);
+//        loginButton.setBackgroundResource(R.drawable.fb);
 //        loginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 //        loginButton.setCompoundDrawablePadding(0);
 //        loginButton.setPadding(0, 0, 0, 0);
-//        loginButton.setText("");
+//        loginButton.setText("fbbbbbbbbb");
+//
 
 
         signmeUp.setOnClickListener(new View.OnClickListener() {

@@ -49,7 +49,7 @@ public class MetroFragment extends Fragment {
 
 
     // JSON Node names
-    private static final String TAG_metrostationmodel = "metrostationmodel";
+    private static final String TAG_metrostationmodel = "listmetrostation";
     JSONArray metrostation = null;
 
     private static String url = "http://gate-info.com/transportation/public/webservice/listmetrostation";

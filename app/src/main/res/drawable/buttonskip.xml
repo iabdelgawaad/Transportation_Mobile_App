@@ -3,31 +3,28 @@
     <item  android:state_pressed="true" >
         <shape>
             <solid
-                android:color="#FFA000"
-                android:text="#1d0f29"/>
+                android:color="#3c5ca0"
+                android:text="#ffffff"/>
             <stroke
                 android:width="2dp"
-                android:color="#FFC107"
-                android:text="#1d0f29"/>
+                android:color="#3c5ca0"
+                android:text="#ffffff"/>
             <corners
-                android:radius="2dp" />
+                android:radius="50dp" />
 
         </shape>
     </item>
     <item>
-
         <shape>
             <solid
-                android:color="#46876c"
+                android:color="#3c5ca0"
                 android:text="#f8f9fa"/>
-
             <stroke
                 android:width="2dp"
-                android:color="#236348"
-                android:text="#FFA000" />
+                android:color="#3c5ca0"
+                android:text="#f4f4f4" />
             <corners
-                android:radius="2dp" />
-
+                android:radius="50dp" />
         </shape>
     </item>
 </selector>
