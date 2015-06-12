@@ -13,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.FBLoginSample.R;
@@ -21,6 +24,10 @@ import com.FBLoginSample.R;
  * Created by hp1 on 21-01-2015.
  */
 public class Tab1 extends Fragment implements Communicator{
+
+    RelativeLayout myLayout;
+    Button myButton ;
+    TextView myTxt;
 
     MyAdapter mAdapter;
     RecyclerView recyclerView;
@@ -52,25 +59,45 @@ public class Tab1 extends Fragment implements Communicator{
         super.onViewCreated(view, savedInstanceState);
 
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        // recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this));
-        // this is data fro recycler view
-//        Bundle extras = getActivity().getIntent().getExtras();
-//        String stationarray = extras.getString("stations");
+        myLayout = (RelativeLayout) view.findViewById(R.id.tab1);
+        myButton = new Button(getActivity());
+        if(HomeFragment.searchAction==0)
+        {
+
+//            myTxt=new TextView(getActivity());
+//            myTxt.setText("STATIONS LIST");
+//            myTxt.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
 //
-//        Log.d("statiiions:",stationarray);
+//            myTxt.setTextSize(30);
+//            myTxt.setLayoutParams(new RelativeLayout.LayoutParams(
+//                    RelativeLayout.LayoutParams.FILL_PARENT,
+//                    RelativeLayout.LayoutParams.FILL_PARENT
+//            ));
+//            myLayout.addView(myTxt);
+
+//            myButton = new Button(getActivity());
+//            myButton.setLayoutParams(new RelativeLayout.LayoutParams(
+//                    RelativeLayout.LayoutParams.FILL_PARENT,
+//                    RelativeLayout.LayoutParams.FILL_PARENT));
+//
+//            myLayout.addView(myButton);
 
 
 
 
-        // 2. set layoutManger
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        // 3. create an adapter
-        mAdapter = new MyAdapter(Tab1.itemsData);
-        // 4. set adapter
-        recyclerView.setAdapter(mAdapter);
-        // 5. set item animator to DefaultAnimator
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        Toast.makeText(getActivity().getBaseContext(),"i am tab wa7d",Toast.LENGTH_SHORT);
+
+            recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+            // 2. set layoutManger
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            // 3. create an adapter
+            mAdapter = new MyAdapter(Tab1.itemsData);
+            // 4. set adapter
+            recyclerView.setAdapter(mAdapter);
+            // 5. set item animator to DefaultAnimator
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        }
 
     }
 
@@ -91,6 +118,16 @@ public class Tab1 extends Fragment implements Communicator{
 
     @Override
     public void respond(String[] stations, String[] stationType) {
+
+    }
+
+    @Override
+    public void openMetroLineFragment(int stationId, Fragment fragment) {
+
+    }
+
+    @Override
+    public void openBusLineFragment(int stationId, Fragment fragment) {
 
     }
 }

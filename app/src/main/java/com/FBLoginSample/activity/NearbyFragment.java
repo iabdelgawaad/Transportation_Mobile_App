@@ -1,5 +1,6 @@
 package com.FBLoginSample.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,10 +51,10 @@ import java.util.List;
 public class NearbyFragment extends Fragment {
 
     Circle mCircle;
+    Communicator communicator;
 
     public static String flat = "1.396810375642184";
     public static String flong = "103.8185612431347";
-
     private ProgressDialog pDialog;
 
     // JSON Node names
@@ -71,7 +72,7 @@ public class NearbyFragment extends Fragment {
     private static LatLng StaticMe;
     public static GoogleMap map;
     public static TextView latlangtxt;
-    GetUserData userData;
+    GetUserData     userData;
     GPSTracker gps;
     private AutoCompleteTextView source;
     private AutoCompleteTextView destination;
@@ -101,6 +102,18 @@ public class NearbyFragment extends Fragment {
     public NearbyFragment() {
         // Required empty public constructor
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            communicator = (Communicator) activity;
+        }catch (ClassCastException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -189,7 +202,7 @@ public class NearbyFragment extends Fragment {
             // \n is for new line
             Toast.makeText(getActivity().getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
             if(mCircle == null || mMarker == null){
-                drawMarkerWithCircle(latitude, longitude,"Me","","","");
+                drawMarkerWithCircle(latitude, longitude,"Me","","","","");
             }else{
                 updateMarkerWithCircle(latitude, longitude);
             }
@@ -242,6 +255,7 @@ public class NearbyFragment extends Fragment {
 
                 for (int i = 0; i < sign_up.length(); i++) {
                     JSONObject c = sign_up.getJSONObject(i);
+                    String st_id = c.getString("st_id");
                     String st_name = c.getString(TAG_STATION_NAME);
                     String st_latt = c.getString(TAG_STATION_LATT);
                     String st_long = c.getString(TAG_STATION_LONG);
@@ -261,7 +275,7 @@ public class NearbyFragment extends Fragment {
                     */
 
                     if(mCircle == null || mMarker == null){
-                        drawMarkerWithCircle(la, lo,"","","","");
+                        drawMarkerWithCircle(la, lo,"","","","",st_id);
                     }else{
                         updateMarkerWithCircle(la, lo);
                     }
@@ -365,7 +379,7 @@ public class NearbyFragment extends Fragment {
         mMarker.setPosition(position);
     }
 
-    private void drawMarkerWithCircle(double latt,double lang, final String name,String status,String mean,String MorB) {
+    private void drawMarkerWithCircle(double latt,double lang, final String name,String status,String mean,String MorB,String id) {
 
         LatLng StaticMine = new LatLng(latt ,lang);
         double radiusInMeters = 100.0;
@@ -375,7 +389,7 @@ public class NearbyFragment extends Fragment {
         CircleOptions circleOptions = new CircleOptions().center(StaticMine).radius(radiusInMeters).fillColor(shadeColor).strokeColor(strokeColor).strokeWidth(8);
         mCircle = map.addCircle(circleOptions);
 
-        MarkerOptions markerOptions = new MarkerOptions().position(StaticMine).title(name).snippet("Mean: "+MorB+" Num "+status+"Type: "+ mean+"this station");
+        MarkerOptions markerOptions = new MarkerOptions().position(StaticMine).title(name).snippet(id);
         mMarker = map.addMarker(markerOptions);
         // zoom in the camera to My place
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(StaticMine, 15));
@@ -394,14 +408,29 @@ public class NearbyFragment extends Fragment {
 //
 //            @Override
 //            public boolean onMarkerClick(Marker arg0) {
+////                Fragment fragment = new MetroLinesFragment();
 //                //if (arg0.getTitle().equals(myMarker_name[arg0.getTitle().])) // if marker source is clicked
-//                Toast.makeText(getActivity(), arg0.getTitle(), Toast.LENGTH_SHORT).show();// display toast
-//
+//                Toast.makeText(getActivity(),"ID= "+arg0.getSnippet(), Toast.LENGTH_SHORT).show();// display toast
+//                Toast.makeText(getActivity(),"ID= "+arg0.getTitle(), Toast.LENGTH_SHORT).show();// display toast
+////                communicator.openMetroLineFragment(Integer.parseInt(arg0.getSnippet()), fragment);
 //                return true;
 //            }
 //
 //        });
 
+
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
+        {
+            @Override
+            public void onInfoWindowClick(Marker marker)
+            {
+                // Called when ANY InfoWindow is clicked
+                Fragment fragment = new MetroLinesFragment();
+                communicator.openMetroLineFragment(Integer.parseInt(marker.getSnippet()), fragment);
+
+            }
+        });
 
 
     }
@@ -468,7 +497,7 @@ public class NearbyFragment extends Fragment {
                         double la=Double.parseDouble(latt);
                         double lo=Double.parseDouble(longg);
 
-                        drawMarkerWithCircle(la, lo, name,t_mean,t_status,type);
+                        drawMarkerWithCircle(la, lo, name,t_mean,t_status,type,id);
 
 
 

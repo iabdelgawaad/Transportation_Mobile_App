@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.FBLoginSample.R;
@@ -24,6 +25,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
     StorageDatabaseAdapter storageHelper ;
 
     private Toolbar mToolbar;
+    LinearLayout layout;
     private FragmentDrawer drawerFragment;
     SharedPreferences sharedPref;
     FragmentManager manager;
@@ -42,6 +44,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
 
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        layout= (LinearLayout) findViewById(R.id.target);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -117,8 +120,8 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                 title = getString(R.string.title_nearby);
                 break;
             case 4:
-                fragment = new NearbyFragment();
-                title = getString(R.string.title_navigation);
+                fragment = new FavouriteFragment();
+                title = getString(R.string.title_fav);
                 break;
             case 5:
                 logOut();
@@ -173,6 +176,36 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         tab1=  (Tab1) HomeFragment.adapter.getRegisteredFragment(0);
         //  tab1 = (Tab1) manager.findFragmentById(R.id.tab1);
         tab1.setDataFromHomeFragment(stations,stationType);
+
+    }
+
+    @Override
+    public void openMetroLineFragment(int stationId, Fragment fragment) {
+        MetroLinesFragment metroLinesFragment = new MetroLinesFragment();
+
+        metroLinesFragment.getStationID(stationId);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_body, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        getSupportActionBar().setTitle("Metro Lines on station");
+
+    }
+
+    @Override
+    public void openBusLineFragment(int stationId, Fragment fragment) {
+        BusLinesFragment BusLinesFragment = new BusLinesFragment();
+
+        BusLinesFragment.getStationID(stationId);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_body, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        getSupportActionBar().setTitle("Bus lines on station");
 
     }
 }

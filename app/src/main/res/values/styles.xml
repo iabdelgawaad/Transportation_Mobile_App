@@ -6,7 +6,7 @@
         <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
      
             <item name="colorPrimary">@color/colorPrimary</item>
-            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+            <item name="colorPrimaryDark">@color/colorPrimary_dark</item>
             <!-- Customize your theme here. -->
     <!-- rokia -->
             <item name="windowActionBar">false</item>
@@ -17,10 +17,10 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:windowBackground">@color/background_material_light</item>
     </style>
 
 

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.FBLoginSample.R;
@@ -40,6 +39,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - replace the contents of the view with that itemsData
 
         viewHolder.txtViewTitle.setText(itemsData[position].getTitle());
+        viewHolder.counter.setText(itemsData[position].getCounter());
+        viewHolder.buslinenum.setText(itemsData[position].getBuslineNum());
+        viewHolder.status.setText(itemsData[position].getitemstatus());
 //        viewHolder.imgViewIcon.setImageResource(itemsData[position].getImageUrl());
 
 
@@ -49,13 +51,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtViewTitle;
-        public TextView txtViewTitlesub;
-        public ImageView imgViewIcon;
+        public TextView counter,buslinenum,status;
+//        public ImageView imgViewIcon;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
             txtViewTitle = (TextView) itemLayoutView.findViewById(R.id.item_title);
-            imgViewIcon = (ImageView) itemLayoutView.findViewById(R.id.item_icon);
+            counter= (TextView) itemLayoutView.findViewById(R.id.counter);
+            buslinenum= (TextView) itemLayoutView.findViewById(R.id.buslinenumtxt);
+            status= (TextView) itemLayoutView.findViewById(R.id.typetxt);
+
+//            imgViewIcon = (ImageView) itemLayoutView.findViewById(R.id.item_icon);
         }
     }
 

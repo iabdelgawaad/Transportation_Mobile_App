@@ -8,6 +8,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.FBLoginSample.activity.FragmentDrawer;
 import com.FBLoginSample.mainscreenss.MainMenu;
 
 import org.apache.http.HttpResponse;
@@ -37,6 +45,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,8 +62,8 @@ import java.util.List;
 
 public class myprof extends Activity {
 
-    public static String userName,userid,userpic,email;
-    TextView name,id;
+    public static String userName, userid, userpic, email;
+    TextView name, id;
     ImageView imageView;
     Button skip;
     private static final int SELECT_PICTURE = 1;
@@ -61,20 +71,22 @@ public class myprof extends Activity {
     private String selectedImagePath;
     private ImageView browseimg;
 
+    SharedPreferences sharedPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
-        name= (TextView) findViewById(R.id.name_txtview);
+        name = (TextView) findViewById(R.id.name_txtview);
         imageView = (ImageView) findViewById(R.id.user_imgview);
-        browseimg = (ImageView)findViewById(R.id.browseimage);
-        skip= (Button) findViewById(R.id.skip);
+        browseimg = (ImageView) findViewById(R.id.browseimage);
+        skip = (Button) findViewById(R.id.skip);
 
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(getBaseContext(),com.FBLoginSample.activity.MainActivity.class);
+                Intent i = new Intent(getBaseContext(), com.FBLoginSample.activity.MainActivity.class);
                 startActivity(i);
             }
         });
@@ -85,7 +97,7 @@ public class myprof extends Activity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
 
             }
         });
@@ -93,32 +105,93 @@ public class myprof extends Activity {
 
         /*GET DATA FROM FACEBOOK LOGIN*/
         Bundle extras = getIntent().getExtras();
-        userName = extras.getString("Fname");
-        userid = extras.getString("id");
-        userpic=extras.getString("pic");
-        email = extras.getString("email");
-        name.setText(userName);
-        Toast.makeText(getBaseContext(),"link"+userid,Toast.LENGTH_SHORT).show();
-        Toast.makeText(getBaseContext(),"befor get",Toast.LENGTH_SHORT).show();
-        GetUserData userData = new GetUserData();
-        Toast.makeText(getBaseContext(),"after get",Toast.LENGTH_SHORT).show();
+        if (extras != null) {
+            userName = extras.getString("Fname");
+            userid = extras.getString("id");
+            userpic = extras.getString("pic");
+            email = extras.getString("email");
+            boolean facebook_login = extras.getBoolean("facebook_login", false);
+            name.setText(userName);
+            Toast.makeText(getBaseContext(), "link" + userid, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "befor get", Toast.LENGTH_SHORT).show();
+            GetUserData userData = new GetUserData();
+            Toast.makeText(getBaseContext(), "after get", Toast.LENGTH_SHORT).show();
 /*
         userData.execute("http://10.2.26.12/transportation/public/webservice/loginservice");
         Toast.makeText(getBaseContext(),"connect",Toast.LENGTH_SHORT).show();
 */
-        new DownloadTask().execute(userpic);
+            new DownloadTask().execute(userpic);
+        }
+        else
+        {
+            sharedPref = getApplicationContext().getSharedPreferences("transportation", getApplicationContext().MODE_PRIVATE);
+            userName=sharedPref.getString("user_name",null);
+            name.setText(userName);
+            setUserProfile();
+        }
 
+}
+    public void setUserProfile() {
+        //get path from shared pereference
+        sharedPref = getApplicationContext().getSharedPreferences("transportation", getApplicationContext().MODE_PRIVATE);
+        String img_path = sharedPref.getString("profile.jpg_path", null);
+
+        loadImageFromStorage(img_path);
     }
 
+    private void loadImageFromStorage(String path) {
 
-/* browse image*/
+            File f = new File(path);
+            Bitmap b=FragmentDrawer.decodeFile(f);
+            imageView.setImageBitmap(b);
+
+
+    }
+    private Bitmap getCircleBitmap(Bitmap bitmap) {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.WHITE;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+        paint.setStrokeWidth(20);
+
+//        // draw the border at bottom
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setColor(color);
+//        canvas.drawRoundRect(rectF, 5, 5, paint);
+//
+
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
+    }
+
+    /* browse image*/
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
                 selectedImagePath = getPath(selectedImageUri);
                 System.out.println("Image Path : " + selectedImagePath);
-                imageView.setImageURI(selectedImageUri);
+                // save image in shared
+                SharedPreferences preferences = getSharedPreferences("transportation", getApplicationContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("profile.jpg_path",  selectedImagePath);
+                editor.commit();
+
+
+                setUserProfile();
             }
         }
     }
@@ -285,5 +358,12 @@ public class myprof extends Activity {
         return result.toString();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sharedPref = getApplicationContext().getSharedPreferences("transportation", getApplicationContext().MODE_PRIVATE);
+        userName=sharedPref.getString("user_name",null);
+        name.setText(userName);
+        setUserProfile();
+    }
 }

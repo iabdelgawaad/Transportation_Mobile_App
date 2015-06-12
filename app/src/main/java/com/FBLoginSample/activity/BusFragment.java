@@ -1,6 +1,8 @@
 package com.FBLoginSample.activity;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.database.SQLException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.FBLoginSample.R;
 import com.FBLoginSample.ServiceHandler;
@@ -25,18 +28,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BusFragment extends Fragment {
+public class BusFragment extends Fragment  {
 
     private ProgressDialog pDialog;
     private static final String TAG_ID = "st_id";
     private static final String TAG_NAME = "st_name";
     private static final String TAG_LONG = "st_long";
     private static final String TAG_LATT = "st_latt";
+    private static final String TAG_TYPE = "st_type";
+    private   String database_version= "0000-00-00";
     RecyclerView recyclerView;
-
+    private  static StorageDatabaseAdapter storageHelper;
     ItemData itemsData[] = new ItemData[]{};
+    private static  String TAG_DATABASE_DATE_VERSION = "st_stations_version";
+
+
 
     MyAdapter mAdapter;
+    SharedPreferences sharedPref;
+
 
     // on scroll
 
@@ -45,15 +55,13 @@ public class BusFragment extends Fragment {
 
     private LinearLayoutManager linearLayoutManager;
     private List<ItemData> stationList;
-
+    boolean isData_remotly = false;
 
 
     // JSON Node names
-    private static final String TAG_metrostationmodel = "listallbussstation";
+    private static final String TAG_BUS_STATION_MODEL = "listallbussstation";
     JSONArray metrostation = null;
-
-
-    private static String url = "http://gate-info.com/transportation/public/webservice/listbusstation";
+    private static String url = "http://gate-info.com/transportation/public/webservice/listbusstationdate";
 
     public BusFragment() {
         // Required empty public constructor
@@ -74,13 +82,46 @@ public class BusFragment extends Fragment {
         //paging
         recyclerView.setHasFixedSize(true);
         linearLayoutManager=new LinearLayoutManager(getActivity());
-
-
+        storageHelper = new StorageDatabaseAdapter(getActivity());
         stationList = new ArrayList<ItemData>();
 
-        loadData(current_page);
 
+        sharedPref = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
+        final boolean isDataUpdated = sharedPref.getBoolean("db_updated_bus", false);
 
+        String [] myStation_names =  storageHelper.getData("busstation");
+
+        if (isDataUpdated && sharedPref.getString("last_inserted_date_bus", null)!=null)
+        {
+            database_version = sharedPref.getString("last_inserted_date_bus", null);
+            loadData(current_page);
+            isData_remotly = true;
+        }
+        else if (myStation_names.length == 0)
+        {
+            loadData(current_page);
+            isData_remotly = true;
+        }
+        else
+        {
+            //Load from SQLight
+            isData_remotly = false;
+
+            if (myStation_names.length != 0) {
+                itemsData = new ItemData[myStation_names.length];
+
+                for (int i = 0; i < myStation_names.length; i++) {
+                    itemsData[i] = new ItemData(myStation_names[i]);
+
+                }
+
+                mAdapter  = new MyAdapter(itemsData);
+                // 4. set adapter
+                recyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            }
+
+        }
 
         recyclerView.setLayoutManager(linearLayoutManager);
         // 3. create an adapter
@@ -93,13 +134,15 @@ public class BusFragment extends Fragment {
             public void onLoadMore(int current_page) {
                 // do somthing...
 
-                loadMoreData(current_page);
+                if(isData_remotly)
+                    loadMoreData(current_page);
 
             }
 
         });
 
     }
+
 
     private void loadData(int current_page) {
 
@@ -116,9 +159,8 @@ public class BusFragment extends Fragment {
         // then it is useful for every call request
 
         //    loadLimit = ival + 10;
-        BusFragment.current_page=current_page;
+        BusFragment.current_page = current_page;
         new GetSignUp().execute();
-        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -127,10 +169,11 @@ public class BusFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friends, container, false);
+        return inflater.inflate(R.layout.fragment_bus, container, false);
     }
 
-    private class GetSignUp extends AsyncTask<Void, Void, List<ItemData>> {
+
+    private class  GetSignUp extends AsyncTask<Void, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -144,7 +187,7 @@ public class BusFragment extends Fragment {
         }
 
         @Override
-        protected List<ItemData>  doInBackground(Void... arg0) {
+        protected String  doInBackground(Void... arg0) {
             // Creating service handler class instance
             com.FBLoginSample.ServiceHandler sh = new ServiceHandler();
 
@@ -152,17 +195,36 @@ public class BusFragment extends Fragment {
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             nameValuePairs.add(new BasicNameValuePair("offset",""+current_page));
+            nameValuePairs.add(new BasicNameValuePair("date",""+database_version));
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.POST , nameValuePairs);//adding params
 
 
-
+            // String jsonStr = sh.makeServiceCall(url, ServiceHandler.POST);//adding params
 
             Log.d("Response: ", "> " + jsonStr);
 
             if (jsonStr != null) {
+                return jsonStr;
+
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the url");
+                return null;
+            }
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String  jsonStr) {
+            super.onPostExecute(jsonStr);
+
+            // 2. set layoutManger
+
+            // Dismiss the progress dialog
+            if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    metrostation = jsonObj.getJSONArray(TAG_metrostationmodel);
+                    metrostation = jsonObj.getJSONArray(TAG_BUS_STATION_MODEL);
 
 
                     for (int i = 0; i < metrostation.length(); i++) {
@@ -171,9 +233,20 @@ public class BusFragment extends Fragment {
                         String st_name = c.getString(TAG_NAME);
                         String st_long = c.getString(TAG_LONG);
                         String st_latt = c.getString(TAG_LATT);
+                        String st_type = c.getString(TAG_TYPE);
+                        String st_version = c.getString(TAG_DATABASE_DATE_VERSION);
+                        database_version = c.getString(TAG_DATABASE_DATE_VERSION);
 
 
+                        // itemsData[i-1] = new ItemData(st_name);
                         stationList.add(new ItemData(st_name));
+                        try {
+                            int deleteid= storageHelper.delete("busstation", Integer.parseInt(st_id));
+                            long insertid = storageHelper.insertData(st_id, st_name, st_type, st_long, st_latt, "busstation", st_version);
+
+                        } catch (SQLException e) {
+
+                        }
 
 
                     }
@@ -182,38 +255,43 @@ public class BusFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
+
             }
 
-            return stationList;
-        }
-
-        @Override
-        protected void onPostExecute(List<ItemData>  result) {
-            super.onPostExecute(result);
-
-            // 2. set layoutManger
-
-            // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
             /**
              * Updating parsed JSON data into ListView
              * */
-            if (result != null && result.size() != 0) {
-                itemsData = new ItemData[result.size()];
-                for (int i = 0; i < result.size(); i++) {
 
-                    itemsData[i] = result.get(i);
+
+            if (jsonStr != null)
+            {
+            String[] myStation_names = storageHelper.getData("busstation");
+
+         /*    if (stationList != null && stationList.size() != 0) {
+                itemsData = new ItemData[stationList.size()];
+                for (int i = 0; i < stationList.size(); i++) {
+
+                    itemsData[i] = stationList.get(i);
                 }
+            }*/
+
+            if (myStation_names.length != 0) {
+                itemsData = new ItemData[myStation_names.length];
+
+                for (int i = 0; i < myStation_names.length; i++) {
+                    itemsData[i] = new ItemData(myStation_names[i]);
+
+                }
+
+                mAdapter = new MyAdapter(itemsData);
+                // 4. set adapter
+                recyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
             }
-            mAdapter  = new MyAdapter(itemsData);
-            // 4. set adapter
-            recyclerView.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
-
-
+                
+            }
         }
 
     }

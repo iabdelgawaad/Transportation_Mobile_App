@@ -2,9 +2,17 @@ package com.FBLoginSample.activity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -18,16 +26,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.LinearLayout;
 
 import com.FBLoginSample.R;
 import com.FBLoginSample.adapter.NavigationDrawerAdapter;
 import com.FBLoginSample.model.NavDrawerItem;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FragmentDrawer extends Fragment {
@@ -40,9 +50,11 @@ public class FragmentDrawer extends Fragment {
     private NavigationDrawerAdapter adapter;
     private View containerView;
     private static String[] titles = null;
+    private static String[] titlesicons = null;
     private FragmentDrawerListener drawerListener;
     ImageView profile_img;
     SharedPreferences sharedPref;
+    LinearLayout target;
 
 
     public FragmentDrawer() {
@@ -61,6 +73,7 @@ public class FragmentDrawer extends Fragment {
         for (int i = 0; i < titles.length; i++) {
             NavDrawerItem navItem = new NavDrawerItem();
             navItem.setTitle(titles[i]);
+            navItem.setImage(titlesicons[i]);
             data.add(navItem);
 
         }
@@ -73,6 +86,7 @@ public class FragmentDrawer extends Fragment {
 
         // drawer labels
         titles = getActivity().getResources().getStringArray(R.array.nav_drawer_labels);
+        titlesicons = getActivity().getResources().getStringArray(R.array.sections_icons);
     }
 
     @Override
@@ -81,11 +95,23 @@ public class FragmentDrawer extends Fragment {
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
+        target= (LinearLayout) layout.findViewById(R.id.target);
 
         profile_img = (ImageView) layout.findViewById(R.id.navimgview);
         setUserProfile();
+
+        profile_img.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity() , com.FBLoginSample.myprof.class );
+                startActivity(intent);
+
+            }
+        });
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
 
+        recyclerView.setAdapter(adapter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
@@ -110,25 +136,80 @@ public class FragmentDrawer extends Fragment {
         //get path from shared pereference
         sharedPref = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
         String img_path  = sharedPref.getString("profile.jpg_path", null);
+        Boolean is_facebook_login = sharedPref.getBoolean("is_facebook_login" , false);
 
-        loadImageFromStorage(img_path);
+        loadImageFromStorage(img_path , is_facebook_login);
     }
 
-    private void loadImageFromStorage(String path)
+    private Bitmap getCircleBitmap(Bitmap bitmap) {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.WHITE;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+        paint.setStrokeWidth(20);
+
+//        // draw the border at bottom
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setColor(color);
+//        canvas.drawRoundRect(rectF, 5, 5, paint);
+//
+
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
+    }
+    private void loadImageFromStorage(String path , Boolean isFbLogin)
     {
-        try {
-            File f=new File(path, "profile.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            profile_img.setImageBitmap(b);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+        File f;
+
+        if (isFbLogin)
+            f=new File(path, "profile.jpg");
+        else
+            f=new File(path);
+        Bitmap b=decodeFile(f);
+
+        profile_img.setImageBitmap(getCircleBitmap(b));
 
     }
 
-    public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar) {
+    public static Bitmap decodeFile(File f) {
+        try {
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+
+            // The new size we want to scale to
+            final int REQUIRED_SIZE=70;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while(o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+                    o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                scale *= 2;
+            }
+
+            // Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+        } catch (FileNotFoundException e) {}
+        return null;
+    }
+
+    public void setUp(int fragmentId, final DrawerLayout drawerLayout, final Toolbar toolbar) {
         containerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -147,7 +228,12 @@ public class FragmentDrawer extends Fragment {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                toolbar.setAlpha(1 - slideOffset / 2);
+//                toolbar.setAlpha(1 - slideOffset / 2);
+                toolbar.setTranslationX(slideOffset * drawerView.getWidth());
+                mDrawerLayout.bringChildToFront(drawerView);
+                mDrawerLayout.requestLayout();
+
+
             }
         };
 

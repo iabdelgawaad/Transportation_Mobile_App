@@ -4,23 +4,22 @@ package com.FBLoginSample.model;
 public class NavDrawerItem {
     private boolean showNotify;
     private String title;
-
-    int imgResID;
+    String imgResID;
 
     public NavDrawerItem() {
 
     }
-    public NavDrawerItem(String itemName, int imgResID) {
+    public NavDrawerItem(String itemName, String imgResID) {
         super();
         this.title = itemName;
         this.imgResID = imgResID;
     }
 
 
-    public NavDrawerItem(boolean showNotify, String title) {
+   /* public NavDrawerItem(boolean showNotify, String title) {
         this.showNotify = showNotify;
         this.title = title;
-    }
+    }*/
 
 
 
@@ -39,4 +38,13 @@ public class NavDrawerItem {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getImage() {
+        return imgResID;
+    }
+
+    public void setImage(String imgResID) {
+        this.imgResID = imgResID;
+    }
+
 }

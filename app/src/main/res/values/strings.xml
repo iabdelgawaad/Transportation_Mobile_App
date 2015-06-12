@@ -22,9 +22,20 @@
         <item>@string/title_busStations</item>
         <item>@string/title_metroStations</item>
         <item>@string/title_nearby</item>
-        <item>@string/title_navigation</item>
+        <item>@string/title_fav</item>
         <item>@string/title_logout</item>
     </string-array>
+
+
+    <string-array name="sections_icons">
+        <item>home</item>
+        <item>metro</item>
+        <item>bus</item>
+        <item>map</item>
+        <item>fav</item>
+        <item>logout</item>
+    </string-array>
+
 
     <string name="title_messages">Messages</string>
     <string name="title_friends">Friends</string>
@@ -34,7 +45,7 @@
     <string name="title_busStations">Metro stations</string>
     <string name="title_metroStations">Bus stations</string>
     <string name="title_nearby">Nearby Stations</string>
-    <string name="title_navigation">Navigation</string>
+    <string name="title_fav">Favo</string>
     <string name="title_logout">Logout</string>
 
 <!--  rokia !-->
