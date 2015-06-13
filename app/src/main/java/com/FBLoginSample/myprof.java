@@ -52,6 +52,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -245,7 +246,12 @@ public class myprof extends Activity {
         protected Bitmap doInBackground(String... params)
         {
             String url = params[0];
-            bitmap = downloadImage(url);
+         //   bitmap = downloadImage(url);
+            try {
+                bitmap  = getFacebookProfilePicture(url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
             return bitmap;
         }
 
@@ -294,6 +300,19 @@ public class myprof extends Activity {
         return directory.getAbsolutePath();
     }
 
+
+    public static Bitmap getFacebookProfilePicture(String userID) throws MalformedURLException {
+        Bitmap bitmap = null;
+
+        URL imageUrl = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
+        try {
+            bitmap = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
     // Method to download using URL class
     public Bitmap downloadImage(String url) {
         Bitmap bitmap = null;
@@ -445,7 +464,8 @@ public class myprof extends Activity {
                         editor.putString("user_id",user_id);
                         editor.commit();
                         //
-                        new DownloadTask().execute(userpic);
+                       // new DownloadTask().execute(userpic);
+                        new DownloadTask().execute(userPassword);
 
                     }
                     else if(status.equals("0")){//error email
