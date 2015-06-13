@@ -4,14 +4,13 @@
     android:background="@drawable/grad"
     android:id="@+id/lay">
 
+
     <RelativeLayout
         android:id="@+id/nav_header_container"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary">
-
-
 
         <RelativeLayout
             android:id="@+id/nav_header_container1"
@@ -24,6 +23,7 @@
 
 
             <ImageView
+
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:src="@drawable/ic_profile"

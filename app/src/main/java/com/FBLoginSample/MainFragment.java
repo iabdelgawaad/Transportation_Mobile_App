@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -48,6 +49,7 @@ public class MainFragment extends Fragment {
     Button loginme,signmeUp;
     public static boolean signedIn = false;
     SharedPreferences sharedPref;
+    boolean facebook_login = false;
 
     private ProgressDialog pDialog;
     private static String url = "http://gate-info.com/transportation/public/webservice/loginservice";
@@ -98,6 +100,11 @@ public class MainFragment extends Fragment {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
+                            SharedPreferences preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("is_facebook_login", true);
+                            editor.commit();
+
                             Log.d("FB Email:", email);
                             //
                             Intent i = new Intent(getActivity(), myprof.class);
@@ -247,7 +254,8 @@ public class MainFragment extends Fragment {
                 passwordData=password.getText().toString();
                 if(emailValid(emailData)&&!(passwordData.matches(""))){
 
-                   // Toast.makeText(getBaseContext(), "successfully", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(getActivity(), "successfully", Toast.LENGTH_SHORT).show();
+
 
                     new GetContacts().execute();
 
@@ -314,7 +322,32 @@ public class MainFragment extends Fragment {
                     if(status.equals("1")){     //correct
 
                         String id=jsonObj.getJSONArray(TAG_LOGINCONTENTS).getJSONObject(0).getString("user_id");
-                        Intent intent=new Intent(getActivity(),com.FBLoginSample.me.class);
+                        username=jsonObj.getJSONArray(TAG_LOGINCONTENTS).getJSONObject(0).getString("user_name");
+                        Intent intent=new Intent(getActivity(),myprof.class);
+                        intent.putExtra("id",id);
+                        intent.putExtra("user_name",username);
+                        intent.putExtra("email",emailData);
+                        intent.putExtra("password",passwordData);
+                        intent.putExtra("facebook_login",facebook_login);
+
+                        //       //save path to shared preference
+                        SharedPreferences preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("profile.jpg_path",  "");
+                        editor.putString("user_name",username);
+                        editor.putString("facebook_id","");
+                        editor.putString("email",emailData);
+                        editor.putString("user_id",id);
+                        editor.commit();
+                        //
+                        //Save user data to sharepreferences
+                        signedIn = true;
+                        preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
+                        editor = preferences.edit();
+                        editor.putBoolean("signedIn", signedIn);
+                        editor.commit();
+                        //
+
                         // intent.putExtra("user_id",id);
                         startActivity(intent);
                     }

@@ -91,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
+
             android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="#ffffff"
@@ -117,7 +118,6 @@
             android:layout_alignParentEnd="true"
             android:layout_toRightOf="@+id/item_icon"
             android:layout_toEndOf="@+id/item_icon">
-
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -181,6 +181,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
+
         </RelativeLayout>
 
 
@@ -194,6 +195,7 @@
             android:layout_alignRight="@+id/relativeLayout"
             android:layout_alignEnd="@+id/relativeLayout"
             android:layout_alignTop="@+id/item_title" />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -209,6 +211,7 @@
             android:layout_toEndOf="@+id/buslinenumtxt"
             android:layout_alignTop="@+id/buslinenumtxt"
             android:layout_toRightOf="@+id/buslinenumtxt" />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -234,6 +237,7 @@
             android:layout_alignTop="@+id/imageView"
             android:layout_toLeftOf="@+id/imageView"
             android:layout_toStartOf="@+id/imageView" />
+
 
 
     </RelativeLayout>

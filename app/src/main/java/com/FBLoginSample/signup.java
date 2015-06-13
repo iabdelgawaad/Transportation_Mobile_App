@@ -78,6 +78,8 @@ public class signup extends ActionBarActivity {
 
                         new GetSignUp().execute();
                         Toast.makeText(getBaseContext(), "success", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
                     }
 
                     else
@@ -161,7 +163,6 @@ public class signup extends ActionBarActivity {
                     {
                         String id = c.getString(TAG_ID);
                         Log.d("id",""+id);
-
                     }
 
                     else

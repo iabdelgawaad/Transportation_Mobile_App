@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MetroFragment extends Fragment {
+public class MetroFragment extends Fragment  {
 
     Communicator communicator;
     private ProgressDialog pDialog;
@@ -37,14 +37,20 @@ public class MetroFragment extends Fragment {
     private static final String TAG_NAME = "st_name";
     private static final String TAG_LONG = "st_long";
     private static final String TAG_LATT = "st_latt";
+
+    private static final String TAG_TYPE = "st_type";
     private   String database_version= "0000-00-00";
+    RecyclerView recyclerView;
     private  static StorageDatabaseAdapter storageHelper;
+    ItemData itemsData[] = new ItemData[]{};
     private static  String TAG_DATABASE_DATE_VERSION = "st_stations_version";
+
+
+
+    MyAdapter mAdapter;
     SharedPreferences sharedPref;
 
-    RecyclerView recyclerView;
-    ItemData itemsData[] = new ItemData[]{};
-    MyAdapter mAdapter;
+
     // on scroll
     private static int current_page = 0;
     private LinearLayoutManager linearLayoutManager;
@@ -69,8 +75,6 @@ public class MetroFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-
 
     public MetroFragment() {
         // Required empty public constructor
@@ -141,6 +145,7 @@ public class MetroFragment extends Fragment {
             @Override
             public void onLoadMore(int current_page) {
                 // do somthing...
+
                 if(isData_remotly)
                 loadMoreData(current_page);
 
@@ -149,6 +154,7 @@ public class MetroFragment extends Fragment {
         });
 
     }
+
 
     private void loadData(int current_page) {
 
@@ -167,7 +173,7 @@ public class MetroFragment extends Fragment {
         //    loadLimit = ival + 10;
         MetroFragment.current_page=current_page;
         new GetSignUp().execute();
-//        mAdapter.notifyDataSetChanged();
+
 
     }
 
@@ -180,6 +186,7 @@ public class MetroFragment extends Fragment {
     }
 
     private class GetSignUp extends AsyncTask<Void, Void, List<ItemData>> {
+
 
         @Override
         protected void onPreExecute() {
@@ -202,6 +209,7 @@ public class MetroFragment extends Fragment {
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             nameValuePairs.add(new BasicNameValuePair("offset",""+current_page));
+            nameValuePairs.add(new BasicNameValuePair("date",""+database_version));
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.POST , nameValuePairs);//adding params
 
 
@@ -209,6 +217,7 @@ public class MetroFragment extends Fragment {
 
             Log.d("Response: ", "> " + jsonStr);
 
+            // Dismiss the progress dialog
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
@@ -222,11 +231,9 @@ public class MetroFragment extends Fragment {
                         String st_name = c.getString(TAG_NAME);
                         String st_long = c.getString(TAG_LONG);
                         String st_latt = c.getString(TAG_LATT);
-                        String st_type = c.getString("st_type");
-//                        String st_version = c.getString(TAG_DATABASE_DATE_VERSION);
-//                        database_version = c.getString(TAG_DATABASE_DATE_VERSION);
-                        String st_version = "1";
-                        database_version = "1";
+                        String st_type = c.getString(TAG_TYPE);
+                        String st_version = c.getString(TAG_DATABASE_DATE_VERSION);
+                        database_version = c.getString(TAG_DATABASE_DATE_VERSION);
 
                         String BusLineNum="522";
 
@@ -242,17 +249,23 @@ public class MetroFragment extends Fragment {
 
                         }
 
+
                     }
                     // Getting JSON Array node
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
+                return stationList;
+
             }
 
-            return stationList;
+             else {
+                Log.e("ServiceHandler", "Couldn't get any data from the url");
+                return null;
+            }
+
+
         }
 
         @Override
@@ -261,24 +274,14 @@ public class MetroFragment extends Fragment {
 
             // 2. set layoutManger
 
-            // Dismiss the progress dialog
+
+
             if (pDialog.isShowing())
                 pDialog.dismiss();
             /**
              * Updating parsed JSON data into ListView
              * */
 
-            if (result != null && result.size() != 0) {
-                itemsData = new ItemData[result.size()];
-                for (int i = 0; i < result.size(); i++) {
-
-                    itemsData[i] = result.get(i);
-                }
-            }
-            mAdapter  = new MyAdapter(itemsData);
-            // 4. set adapter
-            recyclerView.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
 
             recyclerView.addOnItemTouchListener(
                     new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
@@ -293,6 +296,33 @@ public class MetroFragment extends Fragment {
 
                         }
                     }));
+
+
+
+
+            String[] myStation_names = storageHelper.getData("metrostation");
+
+         /*    if (stationList != null && stationList.size() != 0) {
+                itemsData = new ItemData[stationList.size()];
+                for (int i = 0; i < stationList.size(); i++) {
+
+                    itemsData[i] = stationList.get(i);
+                }
+            }*/
+
+            if (myStation_names.length != 0) {
+                itemsData = new ItemData[myStation_names.length];
+
+                for (int i = 0; i < myStation_names.length; i++) {
+                    itemsData[i] = new ItemData(myStation_names[i]);
+
+                }
+
+                mAdapter = new MyAdapter(itemsData);
+                // 4. set adapter
+                recyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            }
         }
 
     }

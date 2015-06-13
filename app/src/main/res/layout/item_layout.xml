@@ -22,6 +22,7 @@
         <RelativeLayout
             android:id="@+id/item_icon"
             android:layout_width="110dp"
+
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="1dp"
@@ -50,6 +51,7 @@
                 android:id="@+id/item_title"
                 android:layout_above="@+id/imageView2"
                 android:layout_centerHorizontal="true" />
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,6 +95,7 @@
         </RelativeLayout>
 
     <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
@@ -141,6 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20 min"
+
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:gravity="center"
@@ -168,6 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5 min"
+
                 android:gravity="center"
                 android:textSize="12dp"
                 android:layout_marginLeft="5dp"
@@ -185,6 +190,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
+
         </RelativeLayout>
 
 
@@ -199,10 +205,12 @@
             android:layout_alignEnd="@+id/relativeLayout"
             android:layout_alignTop="@+id/textView3" />
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bus line in this station"
+
             android:textColor="@color/accent_material_light"
             android:gravity="center"
             android:textStyle="bold"
@@ -217,6 +225,7 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
+
             android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="#000000"
@@ -225,6 +234,7 @@
             android:layout_alignTop="@+id/imageView"
             android:layout_toLeftOf="@+id/imageView"
             android:layout_toStartOf="@+id/imageView" />
+
 
 
     </RelativeLayout>

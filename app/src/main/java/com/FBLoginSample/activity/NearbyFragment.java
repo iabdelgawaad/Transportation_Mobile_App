@@ -225,7 +225,28 @@ public class NearbyFragment extends Fragment {
 
 
 
+        // check if GPS enabled
+        if(gps.canGetLocation()){
 
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+
+            StaticMe=new LatLng(latitude,longitude);
+            // \n is for new line
+            Toast.makeText(getActivity().getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+            if(mCircle == null || mMarker == null){
+                drawMarkerWithCircle(latitude, longitude,"Me","","","","");
+            }else{
+                updateMarkerWithCircle(latitude, longitude);
+            }
+
+
+        }else{
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
         //connect Backend
 
         //userData = new GetUserData();
@@ -419,6 +440,7 @@ public class NearbyFragment extends Fragment {
 
     }
 
+
     private void drawMarkerWithCircle(double latt,double lang, final String name,String status,String mean,String MorB,String id) {
 
         LatLng StaticMine = new LatLng(latt ,lang);
@@ -432,6 +454,7 @@ public class NearbyFragment extends Fragment {
         MarkerOptions markerOptions = new MarkerOptions().position(StaticMine).title(name).snippet(id).
         icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         ;
+
         mMarker = map.addMarker(markerOptions);
         // zoom in the camera to My place
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(StaticMine, 15));

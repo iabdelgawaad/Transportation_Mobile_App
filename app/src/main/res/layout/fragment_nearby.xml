@@ -5,9 +5,6 @@
         android:orientation="vertical"
         tools:context="com.FBLoginSample.activity.MetroFragment">
 
-
-
-
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/LinearLayout2"

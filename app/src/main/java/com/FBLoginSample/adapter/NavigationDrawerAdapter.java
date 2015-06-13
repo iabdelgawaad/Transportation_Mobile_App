@@ -47,7 +47,6 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     public void onBindViewHolder(MyViewHolder holder, int position) {
         NavDrawerItem current = data.get(position);
         holder.title.setText(current.getTitle());
-
         //
         int resId = context.getResources().getIdentifier(current.getImage(), "drawable", context.getPackageName());
         Drawable drawable = context.getResources().getDrawable(resId);
@@ -71,4 +70,5 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
         }
     }
+
 }

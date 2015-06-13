@@ -2,6 +2,7 @@ package com.FBLoginSample.activity;
 
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -134,7 +135,7 @@ public class MetroLinesFragment extends Fragment {
                         for (int i = 0; i < metrostation.length(); i++) {
                             JSONObject c = metrostation.getJSONObject(i);
                             String st_id=c.getString("st_id");
-                            String st_name = c.getString(TAG_NAME);
+           String st_name = c.getString(TAG_NAME);
                             String st_long = c.getString(TAG_LONG);
                             String st_latt = c.getString(TAG_LATT);
 
@@ -147,6 +148,7 @@ public class MetroLinesFragment extends Fragment {
 
 
                             itemsData[i] = new ItemData("Metro num:"+st_transportation_number, st_transportationmean, "", st_stauts,"",new_image,st_id);
+
                         }
                         // Getting JSON Array node
 

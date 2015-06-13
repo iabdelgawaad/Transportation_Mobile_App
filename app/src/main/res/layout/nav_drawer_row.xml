@@ -29,6 +29,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/background_floating_material_light"
+
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/flag"
         android:layout_toEndOf="@+id/flag" />

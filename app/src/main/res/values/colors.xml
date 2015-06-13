@@ -4,12 +4,14 @@
     <color name="colorPrimary_dark">#28053a</color>
     <color name="colorPrimary_light">#C5CAE9</color>
     <color name="colorAccent">#3c0559</color>
+
     <color name="primary_text">#ffffff</color>
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
     <color name="tabsScrollColor">#330f46</color>
+
 
 
 </resources>

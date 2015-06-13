@@ -2,6 +2,7 @@ package com.FBLoginSample.activity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,6 +35,7 @@ import com.FBLoginSample.model.NavDrawerItem;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,6 +99,16 @@ public class FragmentDrawer extends Fragment {
 
         profile_img = (ImageView) layout.findViewById(R.id.navimgview);
         setUserProfile();
+
+        profile_img.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity() , com.FBLoginSample.myprof.class );
+                startActivity(intent);
+
+            }
+        });
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
 
         recyclerView.setAdapter(adapter);
@@ -124,8 +136,9 @@ public class FragmentDrawer extends Fragment {
         //get path from shared pereference
         sharedPref = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
         String img_path  = sharedPref.getString("profile.jpg_path", null);
+        Boolean is_facebook_login = sharedPref.getBoolean("is_facebook_login" , false);
 
-        loadImageFromStorage(img_path);
+        loadImageFromStorage(img_path , is_facebook_login);
     }
 
     private Bitmap getCircleBitmap(Bitmap bitmap) {
@@ -196,20 +209,45 @@ public class FragmentDrawer extends Fragment {
     }
 
 
-    private void loadImageFromStorage(String path)
+
+    private void loadImageFromStorage(String path , Boolean isFbLogin)
     {
+        File f;
+
+        if (isFbLogin)
+            f=new File(path, "profile.jpg");
+        else
+            f=new File(path);
+        Bitmap b=decodeFile(f);
+
+        profile_img.setImageBitmap(getCircleBitmap(b));
+
+    }
+
+    public static Bitmap decodeFile(File f) {
         try {
-            File f=new File(path, "profile.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
 
-            Bitmap pb=padBitmap(b);
-            profile_img.setImageBitmap(getCircleBitmap(pb));
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
 
+            // The new size we want to scale to
+            final int REQUIRED_SIZE=70;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while(o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+                    o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                scale *= 2;
+            }
+
+            // Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+        } catch (FileNotFoundException e) {}
+        return null;
     }
 
     public void setUp(int fragmentId, final DrawerLayout drawerLayout, final Toolbar toolbar) {

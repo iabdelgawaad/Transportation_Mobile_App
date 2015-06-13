@@ -2,6 +2,7 @@ package com.FBLoginSample.activity;
 
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import com.FBLoginSample.R;
@@ -53,7 +55,6 @@ public class BusLinesFragment extends Fragment {
     MyAdapter mAdapter;
     ImageView fav_img;
 
-
     public BusLinesFragment() {
         // Required empty public constructor
     }
@@ -87,6 +88,7 @@ public class BusLinesFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         // 5. set item animator to DefaultAnimator
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
 
     }
@@ -133,6 +135,7 @@ public class BusLinesFragment extends Fragment {
                             JSONObject c = metrostation.getJSONObject(i);
                             String st_id=c.getString("st_id");
                             String tr_id=c.getString("tr_id");
+
                             String st_name = c.getString(TAG_NAME);
                             String st_long = c.getString(TAG_LONG);
                             String st_latt = c.getString(TAG_LATT);
@@ -146,11 +149,13 @@ public class BusLinesFragment extends Fragment {
 
                             Drawable new_image= getResources().getDrawable(R.drawable.fav);
 //                            img.setImageDrawable(new_image);
+
 /*
                         stationList.add(new ItemData(st_name,counter,BusLineNum,st_id));
 
  */
                             itemsData[i] = new ItemData("Bus num:"+st_transportation_number, counter, "0", st_stauts,"",new_image,tr_id);
+
                         }
                         // Getting JSON Array node
 
