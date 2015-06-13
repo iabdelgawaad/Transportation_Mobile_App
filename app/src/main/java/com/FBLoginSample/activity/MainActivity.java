@@ -82,10 +82,16 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.about_settings) {
+            //intent
+            Intent i=new Intent(getApplicationContext(),com.FBLoginSample.activity.AboutUs.class);
+            startActivity(i);
         }
 
+        if (id == R.id.contact_settings) {
+            Intent i=new Intent(getApplicationContext(),ContactUs.class);
+            startActivity(i);
+        }
         if(id == R.id.action_search){
             Toast.makeText(getApplicationContext(), "Search action is selected!", Toast.LENGTH_SHORT).show();
             return true;

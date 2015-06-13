@@ -42,7 +42,7 @@ public class BusFragment extends Fragment  {
     RecyclerView recyclerView;
     private  static StorageDatabaseAdapter storageHelper;
     ItemData itemsData[] = new ItemData[]{};
-    private static  String TAG_DATABASE_DATE_VERSION = "st_stations_version";
+    private static  String TAG_DATABASE_DATE_VERSION = "version";
 
 
 
