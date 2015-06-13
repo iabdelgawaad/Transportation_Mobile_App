@@ -5,6 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -18,16 +25,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.FBLoginSample.R;
+import com.FBLoginSample.adapter.NavigationDrawerAdapter;
+import com.FBLoginSample.model.NavDrawerItem;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.FBLoginSample.R;
-import com.FBLoginSample.adapter.NavigationDrawerAdapter;
-import com.FBLoginSample.model.NavDrawerItem;
 
 
 public class FragmentDrawer extends Fragment {
@@ -40,9 +48,11 @@ public class FragmentDrawer extends Fragment {
     private NavigationDrawerAdapter adapter;
     private View containerView;
     private static String[] titles = null;
+    private static String[] titlesicons = null;
     private FragmentDrawerListener drawerListener;
     ImageView profile_img;
     SharedPreferences sharedPref;
+    LinearLayout target;
 
 
     public FragmentDrawer() {
@@ -61,6 +71,7 @@ public class FragmentDrawer extends Fragment {
         for (int i = 0; i < titles.length; i++) {
             NavDrawerItem navItem = new NavDrawerItem();
             navItem.setTitle(titles[i]);
+            navItem.setImage(titlesicons[i]);
             data.add(navItem);
 
         }
@@ -73,6 +84,7 @@ public class FragmentDrawer extends Fragment {
 
         // drawer labels
         titles = getActivity().getResources().getStringArray(R.array.nav_drawer_labels);
+        titlesicons = getActivity().getResources().getStringArray(R.array.sections_icons);
     }
 
     @Override
@@ -81,11 +93,13 @@ public class FragmentDrawer extends Fragment {
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
+        target= (LinearLayout) layout.findViewById(R.id.target);
 
         profile_img = (ImageView) layout.findViewById(R.id.navimgview);
         setUserProfile();
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
 
+        recyclerView.setAdapter(adapter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
@@ -114,12 +128,82 @@ public class FragmentDrawer extends Fragment {
         loadImageFromStorage(img_path);
     }
 
+    private Bitmap getCircleBitmap(Bitmap bitmap) {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.WHITE;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+        paint.setStrokeWidth(20);
+
+//        // draw the border at bottom
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setColor(color);
+//        canvas.drawRoundRect(rectF, 5, 5, paint);
+//
+
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
+    }
+
+    public static Bitmap padBitmap(Bitmap bitmap)
+    {
+        int paddingX;
+        int paddingY;
+
+        if (bitmap.getWidth() == bitmap.getHeight())
+        {
+            paddingX = 0;
+            paddingY = 0;
+        }
+        else if (bitmap.getWidth() > bitmap.getHeight())
+        {
+            paddingX = 0;
+            paddingY = bitmap.getWidth() - bitmap.getHeight();
+        }
+        else
+        {
+            paddingX = bitmap.getHeight() - bitmap.getWidth();
+            paddingY = 0;
+        }
+
+        Bitmap paddedBitmap = Bitmap.createBitmap(
+                bitmap.getWidth() + paddingX,
+                bitmap.getHeight() + paddingY,
+                Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(paddedBitmap);
+        canvas.drawARGB(0xFF, 0xFF, 0xFF, 0xFF); // this represents white color
+        canvas.drawBitmap(
+                bitmap,
+                paddingX / 2,
+                paddingY / 2,
+                new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return paddedBitmap;
+    }
+
+
     private void loadImageFromStorage(String path)
     {
         try {
             File f=new File(path, "profile.jpg");
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            profile_img.setImageBitmap(b);
+
+            Bitmap pb=padBitmap(b);
+            profile_img.setImageBitmap(getCircleBitmap(pb));
         }
         catch (FileNotFoundException e)
         {
@@ -128,7 +212,7 @@ public class FragmentDrawer extends Fragment {
 
     }
 
-    public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar) {
+    public void setUp(int fragmentId, final DrawerLayout drawerLayout, final Toolbar toolbar) {
         containerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -147,7 +231,12 @@ public class FragmentDrawer extends Fragment {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                toolbar.setAlpha(1 - slideOffset / 2);
+//                toolbar.setAlpha(1 - slideOffset / 2);
+                toolbar.setTranslationX(slideOffset * drawerView.getWidth());
+                mDrawerLayout.bringChildToFront(drawerView);
+                mDrawerLayout.requestLayout();
+
+
             }
         };
 

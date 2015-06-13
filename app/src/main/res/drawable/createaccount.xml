@@ -3,30 +3,26 @@
     <item  android:state_pressed="true" >
         <shape>
             <solid
-                android:color="#FFA000"
-                android:text="#1d0f29"/>
+                android:color="#ffffff"
+                android:text="@color/colorPrimary_dark"/>
             <stroke
                 android:width="2dp"
-                android:color="#FFC107"
-                android:text="#1d0f29"/>
+                android:color="@color/colorPrimary_dark"
+                android:text="@color/colorPrimary_dark"/>
             <corners
-                android:radius="2dp" />
+                android:radius="0dp" />
 
         </shape>
     </item>
     <item>
 
         <shape>
-            <solid
-                android:color="#46876c"
-                android:text="#f8f9fa"/>
-
             <stroke
                 android:width="2dp"
-                android:color="#236348"
+                android:color="@color/colorPrimary_dark"
                 android:text="#FFA000" />
             <corners
-                android:radius="2dp" />
+                android:radius="0dp" />
 
         </shape>
     </item>

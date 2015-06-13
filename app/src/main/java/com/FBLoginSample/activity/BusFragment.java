@@ -1,5 +1,6 @@
 package com.FBLoginSample.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.FBLoginSample.R;
 import com.FBLoginSample.ServiceHandler;
@@ -27,6 +29,7 @@ import java.util.List;
 
 public class BusFragment extends Fragment {
 
+    Communicator communicator;
     private ProgressDialog pDialog;
     private static final String TAG_ID = "st_id";
     private static final String TAG_NAME = "st_name";
@@ -38,6 +41,18 @@ public class BusFragment extends Fragment {
 
     MyAdapter mAdapter;
 
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            communicator = (Communicator) activity;
+        }catch (ClassCastException e)
+        {
+            e.printStackTrace();
+        }
+    }
     // on scroll
 
     private static int current_page = 0;
@@ -49,11 +64,11 @@ public class BusFragment extends Fragment {
 
 
     // JSON Node names
-    private static final String TAG_metrostationmodel = "listallbussstation";
+    private static final String TAG_metrostationmodel = "countdata";
     JSONArray metrostation = null;
 
 
-    private static String url = "http://gate-info.com/transportation/public/webservice/listbusstation";
+    private static String url = "http://gate-info.com/transportation/public/webservice/countofbusinstation";
 
     public BusFragment() {
         // Required empty public constructor
@@ -127,7 +142,7 @@ public class BusFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friends, container, false);
+        return inflater.inflate(R.layout.fragment_bus, container, false);
     }
 
     private class GetSignUp extends AsyncTask<Void, Void, List<ItemData>> {
@@ -136,6 +151,7 @@ public class BusFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
+
             pDialog = new ProgressDialog(getActivity());
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
@@ -166,14 +182,16 @@ public class BusFragment extends Fragment {
 
 
                     for (int i = 0; i < metrostation.length(); i++) {
+                        String counter="0"+i;
                         JSONObject c = metrostation.getJSONObject(i);
                         String st_id = c.getString(TAG_ID);
                         String st_name = c.getString(TAG_NAME);
                         String st_long = c.getString(TAG_LONG);
                         String st_latt = c.getString(TAG_LATT);
+                        String BusLineNum=c.getString("countbusinstation");
 
 
-                        stationList.add(new ItemData(st_name));
+                        stationList.add(new ItemData(st_name,counter,BusLineNum,st_id));
 
 
                     }
@@ -213,7 +231,18 @@ public class BusFragment extends Fragment {
             recyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
 
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
 
+                            Fragment fragment = new BusLinesFragment();
+//                            communicator.openBusLineFragment(Integer.parseInt(stationList.get(position).getItemposotion()), fragment);
+                            Toast.makeText(getActivity().getBaseContext(),stationList.get(position).getItemposotion(),Toast.LENGTH_SHORT).show();
+                            communicator.openBusLineFragment(Integer.parseInt(stationList.get(position).getItemposotion()), fragment);
+
+                        }
+                    }));
         }
 
     }

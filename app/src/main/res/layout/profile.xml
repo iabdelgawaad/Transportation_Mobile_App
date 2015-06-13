@@ -5,23 +5,21 @@
     >
 
     <include
-    android:id="@+id/tool_bar"
-    layout="@layout/tool_bar"
-    ></include>
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        ></include>
 
 
-<RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
-        android:background="@drawable/me"
         >
 
         <ImageView
             android:id="@+id/user_imgview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/me"
             android:scaleType="fitXY"
             android:padding="1dp"/>
 
@@ -41,11 +39,11 @@
             android:layout_margin="8dp"
             android:scaleType="fitXY"
             android:background="@drawable/editor_states"
-            android:src="@drawable/edit"
+            android:src="@drawable/editprofileimge"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:id="@+id/browseimage"
-             />
+            />
     </RelativeLayout>
 
     <RelativeLayout

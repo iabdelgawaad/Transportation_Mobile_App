@@ -5,4 +5,6 @@ package com.FBLoginSample.activity;
  */
 public interface Communicator {
     public void respond(String[] stations,String[] stationType);
+    public void openMetroLineFragment (int stationId , android.support.v4.app.Fragment fragment);
+    public void openBusLineFragment (int stationId , android.support.v4.app.Fragment fragment);
 }

@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.FBLoginSample.activity.HomeFragment">
+
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/LinearLayout2"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity"
+        android:weightSum="1">
+
+
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            >
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+
+                android:padding="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/rela">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteTextViewFrom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="9dp"
+                    android:ems="10"
+                    android:textColor="@color/colorPrimary"
+                    android:hint="From"
+                    android:background="@drawable/layer_card"
+                    android:layout_alignParentTop="true"
+                    android:layout_above="@+id/autoCompleteTextViewTo"
+                    android:layout_alignLeft="@+id/autoCompleteTextViewTo"
+                    android:layout_alignStart="@+id/autoCompleteTextViewTo"
+                    android:layout_alignRight="@+id/autoCompleteTextViewTo"
+                    android:layout_alignEnd="@+id/autoCompleteTextViewTo" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteTextViewTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="9dp"
+                    android:ems="10"
+                    android:textColor="@color/colorPrimary"
+                    android:hint="To"
+                    android:background="@drawable/layer_card"
+                    android:layout_toLeftOf="@+id/search"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignTop="@+id/item_icon"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true" />
+
+                <RelativeLayout
+                    android:id="@+id/item_icon"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="icon"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/search"
+                    android:layout_width="60dp"
+                    android:background="@drawable/btngo"
+                    android:layout_height="60dp"
+                    android:text="Go"
+                    android:shadowRadius="@integer/abc_max_action_buttons"
+                    android:clickable="false"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <com.FBLoginSample.activity.SlidingTabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:background="@color/icons"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:background="#eceef0"
+            >
+        </android.support.v4.view.ViewPager>
+
+
+    </LinearLayout>
+</RelativeLayout>
+

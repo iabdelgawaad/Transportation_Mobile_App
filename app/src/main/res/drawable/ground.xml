@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/camera_small"
-    android:gravity="center"
+    android:src="@drawable/gggg"
+    android:gravity="center_vertical"
     android:tileModeX="mirror"
     android:tileModeY="mirror"
-
-    android:tint="@color/tabsScrollColor"
     android:autoMirrored="true"
-    android:tintMode="multiply"
     android:filter="true"
     android:mipMap="true"
-    android:tileMode="repeat">
+    android:tileMode="clamp">
 </bitmap>
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+                <item name="android:windowNoTitle">true</item>
+                <item name="windowActionBar">false</item>
+                <item name="colorPrimary">@color/colorPrimary</item>
+                <item name="colorPrimaryDark">@color/colorPrimary_dark</item>
+                <item name="colorAccent">@color/colorAccent</item>
+                <item name="android:textColorPrimary">@color/primary_text</item>
+                <item name="android:windowBackground">@color/background_material_light</item>
+                <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector
+                </item>
+        </style>
+</resources>

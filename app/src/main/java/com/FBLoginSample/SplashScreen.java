@@ -18,7 +18,7 @@ import android.widget.ImageView;
 public class SplashScreen extends Activity {
 
     // splash screen timer
-    private static int SPLASH_TIME_OUT =1000;
+    private static int SPLASH_TIME_OUT =800;
     private ViewGroup sceneRoot;
     public static boolean signedIn = false;
     SharedPreferences sharedPref;

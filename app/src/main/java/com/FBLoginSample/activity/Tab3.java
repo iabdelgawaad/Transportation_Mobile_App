@@ -110,4 +110,14 @@ public class Tab3 extends Fragment implements Communicator{
         mAdapter.notifyDataSetChanged();
 
     }
+
+    @Override
+    public void openMetroLineFragment(int stationId, Fragment fragment) {
+
+    }
+
+    @Override
+    public void openBusLineFragment(int stationId, Fragment fragment) {
+
+    }
 }

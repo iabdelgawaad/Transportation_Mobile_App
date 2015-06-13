@@ -8,13 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
-        android:background="@drawable/me"
+        android:background="@drawable/my_profile_image"
         >
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/me"
+            android:src="@drawable/my_profile_image"
             android:scaleType="fitXY"
             android:padding="1dp"/>
 
@@ -34,7 +34,7 @@
             android:layout_margin="8dp"
             android:scaleType="fitXY"
             android:background="@drawable/editor_states"
-            android:src="@drawable/edit"
+            android:src="@drawable/editprofileimge"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>

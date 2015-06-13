@@ -45,7 +45,6 @@ public class HomeFragment extends Fragment {
     private AutoCompleteTextView source;
     private AutoCompleteTextView destination;
     private Button search;
-
     private int sourceState=0;
     private int destinationState=0;
     private String JsonArrayName="areas";
@@ -56,7 +55,7 @@ public class HomeFragment extends Fragment {
     private String[] areas;
     public static String[] stations =new String[] {};
     public static String[] stationsType= new String[] {};
-    private static int searchAction=0;
+    public static int searchAction=0;
 
 
     // Declaring Your View and Variables
@@ -99,6 +98,17 @@ public class HomeFragment extends Fragment {
         search.setEnabled(false);
         source.setThreshold(1);
         destination.setThreshold(1);
+
+        /// FloatingActionButton.Builder(this)
+//
+//        FloatingActionButton fabButton = new FloatingActionButton.Builder(getActivity())
+//                .withDrawable(getResources().getDrawable(R.drawable.ic_action))
+//                .withButtonColor(Color.WHITE)
+//                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+//                .withMargins(0, 0, 16, 16)
+//                .create();
+
+        ////
 
 
         //add listener

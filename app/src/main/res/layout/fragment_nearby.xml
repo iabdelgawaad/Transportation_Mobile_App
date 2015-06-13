@@ -1,69 +1,143 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.FBLoginSample.activity.MetroFragment">
-
-
-    <RelativeLayout
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <AutoCompleteTextView
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/autotxt_src"
-            android:hint="Source"/>
-        <AutoCompleteTextView
-            android:layout_marginTop="40dp"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/autotxt_dest"
-            android:hint="Destination"
-             />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            android:text="GO"
-            android:id="@+id/go"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_toRightOf="@+id/autotxt_src"
-            android:layout_toEndOf="@+id/autotxt_src"
-            android:layout_alignBottom="@+id/autotxt_dest"
-            android:layout_alignParentTop="true" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.FBLoginSample.activity.MetroFragment">
 
 
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/LinearLayout2"
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".MainActivity"
+            android:weightSum="1">
+
+
+            <LinearLayout
+                android:id="@+id/LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal"
+                >
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+
+                    android:padding="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:id="@+id/rela">
+
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/gotoo"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:id="@+id/imageView7" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autotxt_src"
+                        android:layout_width="wrap_content"
+                        android:layout_height="9dp"
+                        android:ems="10"
+                        android:textColor="@color/background_floating_material_light"
+                        android:textColorHint="@color/background_floating_material_light"
+                        android:hint="From"
+                        android:layout_alignParentTop="true"
+                        android:layout_above="@+id/autotxt_dest"
+                        android:layout_alignRight="@+id/autotxt_dest"
+                        android:layout_alignEnd="@+id/autotxt_dest"
+                        android:layout_toRightOf="@+id/imageView7"
+                        android:layout_toEndOf="@+id/imageView7" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autotxt_dest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="9dp"
+                        android:ems="10"
+                        android:textColor="@color/background_floating_material_light"
+                        android:textColorHint="@color/background_floating_material_light"
+                        android:hint="To"
+                        android:layout_alignTop="@+id/item_icon"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/imageView7"
+                        android:layout_toLeftOf="@+id/go"
+                        android:layout_toStartOf="@+id/go" />
+
+                    <RelativeLayout
+                        android:id="@+id/item_icon"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="icon"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true">
+
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/go"
+                        android:layout_width="60dp"
+                        android:background="@drawable/snappy"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary_dark"
+                        android:shadowRadius="@integer/abc_max_action_buttons"
+                        android:clickable="false"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+
+            <fragment
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.google.android.gms.maps.MapFragment"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+            <TextView
+                android:id="@+id/latlang_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="15dp"
+                android:text="NEARBY"
+                android:textStyle="bold"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/map"
+                android:layout_alignRight="@+id/map"
+                android:layout_alignEnd="@+id/map"/>
+
+
+
+
+
+        </LinearLayout>
     </RelativeLayout>
 
 
 
-    <fragment
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.google.android.gms.maps.MapFragment"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-
-    <TextView
-        android:id="@+id/latlang_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="15dp"
-        android:text="NEARBY"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/map"
-        android:layout_alignRight="@+id/map"
-        android:layout_alignEnd="@+id/map"/>
 
 
 
-</LinearLayout>
+

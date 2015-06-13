@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -171,7 +170,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.login, container, false);
     }
 
 
@@ -189,16 +188,6 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //test
-        Button go= (Button) view.findViewById(R.id.gobtn);
-        go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i=new Intent(getActivity().getBaseContext(),test.class);
-                startActivity(i);
-            }
-        });
-
 
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -207,11 +196,11 @@ public class MainFragment extends Fragment {
         LoginButton loginButton= (LoginButton) view.findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends"));
         loginButton.setFragment(this);
-        Typeface face= Typeface.createFromAsset(getActivity().getAssets(), "fonts/BittersweetNF.otf");
-
-        signmeUp.setTypeface(face);
-
-        forgetpass.setTypeface(face);
+//        Typeface face= Typeface.createFromAsset(getActivity().getAssets(), "fonts/BittersweetNF.otf");
+//
+//        signmeUp.setTypeface(face);
+//
+//        forgetpass.setTypeface(face);
         loginButton.registerCallback(mCallbackManager, mCallback);
 
         forgetpass.setOnClickListener(new View.OnClickListener() {
