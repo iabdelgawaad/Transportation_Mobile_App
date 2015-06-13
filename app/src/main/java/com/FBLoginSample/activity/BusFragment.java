@@ -319,7 +319,6 @@ public class BusFragment extends Fragment  {
                     itemsData[i] = new ItemData(myStation_names[i]);
 
                 }
-
                 mAdapter = new MyAdapter(itemsData);
                 // 4. set adapter
                 recyclerView.setAdapter(mAdapter);

@@ -64,7 +64,6 @@
             android:layout_marginRight="10dp"
             android:hint="Email"
             android:padding="10dp"
-            android:background="@drawable/edittext_top_bg"
             android:textColorHint="#cccccc"/>
 
         <EditText
@@ -75,7 +74,6 @@
         android:layout_marginTop="3dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/edittext_bottom_bg"
         android:hint="Password"
         android:textColorHint="#cccccc"
         android:password="true" />

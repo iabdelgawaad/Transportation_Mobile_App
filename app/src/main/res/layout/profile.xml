@@ -65,7 +65,29 @@
             android:textSize="18sp"
             android:gravity="center_vertical"/>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image"
+            android:clickable="true"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/editor_states"
+            android:src="@drawable/editprofilenam"
+            android:id="@+id/imageView8"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Change your profile image and your name if you want or skip to app to continue .."
+        android:id="@+id/textView5" />
 
     <Button android:id="@+id/skip"
         android:layout_width="match_parent"
