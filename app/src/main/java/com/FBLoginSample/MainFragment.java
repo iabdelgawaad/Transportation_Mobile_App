@@ -85,8 +85,7 @@ public class MainFragment extends Fragment {
                         public void onCompleted(
                                 JSONObject object,
                                 GraphResponse response) {
-                            // Application code
-
+                            // Application co
                             Log.v("halima",object.toString());
                             Log.v("LoginActivity", response.toString());
                             //
@@ -94,24 +93,36 @@ public class MainFragment extends Fragment {
                             try {
                                 email = response.getJSONObject().getString("email");
                                 username=response.getJSONObject().getString("name");
+                                profileid = response.getJSONObject().getString("id");
                                 imgurl=object.getJSONObject("picture").getJSONObject("data").getString("url");
 
                             } catch (JSONException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
-                            SharedPreferences preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putBoolean("is_facebook_login", true);
-                            editor.commit();
-
                             Log.d("FB Email:", email);
                             //
                             Intent i = new Intent(getActivity(), myprof.class);
-                            i.putExtra("Fname",username);
-                            i.putExtra("id", profileid);
+                            i.putExtra("user_name",username);
+                            i.putExtra("facebook_id", profileid);
                             i.putExtra("pic", imgurl);
                             i.putExtra("email",email);
+                            facebook_login = true;
+                            i.putExtra("facebook_login",facebook_login);
+
+                            //
+
+                            //Save user data to sharepreferences
+                            signedIn = true;
+                            SharedPreferences preferences = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("signedIn", signedIn);
+                            editor.putBoolean("is_facebook_login",true);
+
+                            editor.commit();
+
+                            //
+
                             startActivity(i);
 
                         }
@@ -218,13 +229,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        /* layout*/
-//        loginButton.setBackgroundResource(R.drawable.fb);
-//        loginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-//        loginButton.setCompoundDrawablePadding(0);
-//        loginButton.setPadding(0, 0, 0, 0);
-//        loginButton.setText("fbbbbbbbbb");
-//
+
 
 
         signmeUp.setOnClickListener(new View.OnClickListener() {

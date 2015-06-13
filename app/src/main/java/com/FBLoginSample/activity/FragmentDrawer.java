@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.FBLoginSample.R;
 import com.FBLoginSample.adapter.NavigationDrawerAdapter;
@@ -55,6 +56,7 @@ public class FragmentDrawer extends Fragment {
     ImageView profile_img;
     SharedPreferences sharedPref;
     LinearLayout target;
+    TextView user_name_drawer;
 
 
     public FragmentDrawer() {
@@ -96,6 +98,7 @@ public class FragmentDrawer extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         target= (LinearLayout) layout.findViewById(R.id.target);
+        user_name_drawer = (TextView) layout.findViewById(R.id.user_name_drawer);
 
         profile_img = (ImageView) layout.findViewById(R.id.navimgview);
         setUserProfile();
@@ -135,10 +138,11 @@ public class FragmentDrawer extends Fragment {
     {
         //get path from shared pereference
         sharedPref = getActivity().getSharedPreferences("transportation", getActivity().getApplicationContext().MODE_PRIVATE);
-        String img_path  = sharedPref.getString("profile.jpg_path", null);
+        String img_path  = sharedPref.getString("profile.jpg_path", "");
         Boolean is_facebook_login = sharedPref.getBoolean("is_facebook_login" , false);
+        user_name_drawer.setText(sharedPref.getString("user_name", ""));
 
-        loadImageFromStorage(img_path , is_facebook_login);
+        loadImageFromStorage(img_path, is_facebook_login);
     }
 
     private Bitmap getCircleBitmap(Bitmap bitmap) {
@@ -212,15 +216,20 @@ public class FragmentDrawer extends Fragment {
 
     private void loadImageFromStorage(String path , Boolean isFbLogin)
     {
-        File f;
+        if(!path.equals("")) {
+            File f;
 
-        if (isFbLogin)
-            f=new File(path, "profile.jpg");
-        else
-            f=new File(path);
-        Bitmap b=decodeFile(f);
+            if (isFbLogin)
+                f = new File(path, "profile.jpg");
+            else
 
-        profile_img.setImageBitmap(getCircleBitmap(b));
+                f = new File(path);
+
+            Bitmap b = decodeFile(f);
+
+            profile_img.setImageBitmap(getCircleBitmap(b));
+            //user_name
+        }
 
     }
 
