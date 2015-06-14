@@ -168,10 +168,11 @@
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logy"
+        android:src="@drawable/tmamlogydark"
 
-        android:layout_above="@+id/login_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
