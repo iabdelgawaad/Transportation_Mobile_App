@@ -1,45 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/balloon_bg"
     android:weightSum="1">
 
-    <EditText
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="40dp"
+        android:text="CONTACT US"
+        android:textStyle="bold"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <LinearLayout
+
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:layout_marginTop="20dp"
-        android:text="Name"
-        android:ems="10"
-        android:id="@+id/editTextName" />
+        android:padding="10dp"
+        android:id="@+id/linearLayout"
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:text="EmailAddress"
-        android:ems="10"
-        android:id="@+id/editTextEmail"
-        android:layout_marginTop="20dp" />
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:inputType="textMultiLine"
-        android:text="message"
-        android:ems="10"
-        android:id="@+id/editTextMessage"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_weight="0.18" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:layout_marginTop="20dp"
+            android:text="Name"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/edittext_top_bg"
+            android:textColorHint="#cccccc"
+            android:ems="10"
+            android:id="@+id/editTextName" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:text="EmailAddress"
+            android:layout_margin="5dp"
+            android:background="@drawable/edittext_top_bg"
+            android:ems="10"
+            android:padding="10dp"
+            android:id="@+id/editTextEmail"
+            android:layout_below="@+id/editTextName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:inputType="textMultiLine"
+            android:text="message"
+            android:ems="10"
+
+            android:textAlignment="gravity"
+            android:textColorHint="#cccccc"
+            android:id="@+id/editTextMessage"
+            android:background="@drawable/edittext_top_bg"
+            android:layout_gravity="top"
+            android:layout_weight="3.49"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:layout_below="@+id/editTextEmail"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </LinearLayout>
 
     <Button
-        android:layout_width="232dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send"
+        android:padding="10dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/halima_button_def"
         android:id="@+id/buttonSend"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp" />
-
-</LinearLayout>
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

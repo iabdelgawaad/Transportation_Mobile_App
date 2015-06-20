@@ -152,7 +152,7 @@ public class myprof extends Activity {
         else
         {
             sharedPref = getApplicationContext().getSharedPreferences("transportation", getApplicationContext().MODE_PRIVATE);
-            userName=sharedPref.getString("user_name",null);
+            userName=sharedPref.getString("user_name","");
             name.setText(userName);
             setUserProfile();
         }
@@ -162,8 +162,11 @@ public class myprof extends Activity {
         //get path from shared pereference
         sharedPref = getApplicationContext().getSharedPreferences("transportation", getApplicationContext().MODE_PRIVATE);
         String img_path = sharedPref.getString("profile.jpg_path", "");
+        name.setText(userName);
 
         loadImageFromStorage(img_path);
+
+
     }
 
     private void loadImageFromStorage(String path) {
